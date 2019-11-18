@@ -9,20 +9,100 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- task: DownloadSecureFile@1
-  inputs:
-    secureFile: settings.xml
-- powershell:  New-Item -Type Directory -Force "${HOME}/.m2"
-- powershell:  Copy-Item -Force "$(Agent.TempDirectory)/settings.xml" "${HOME}/.m2/settings.xml"
+#- task: Maven@3
+#  inputs:
+#    mavenPomFile: 'pom.xml'
+#    mavenOptions: '-Xmx3072m'
+#    javaHomeOption: 'JDKVersion'
+#    jdkVersionOption: '1.8'
+#    jdkArchitectureOption: 'x64'
+#    publishJUnitResults: true
+#    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+#    goals: 'clean package deploy' 
 
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'clean package deploy'
+
+stages:
+- stage: BuildAndPublish
+  displayName: 'Build And Publish'
+  jobs:
+  - job: Build
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    continueOnError: true
+    steps:
+    - task: DownloadSecureFile@1
+      inputs:
+        secureFile: settings.xml
+    - powershell: New-Item -Type Directory -Force "${HOME}/.m2"
+    - powershell: Copy-Item -Force "$(Agent.TempDirectory)/settings.xml" "${HOME}/.m2/settings.xml"
+    - task: Maven@3
+      inputs:
+        mavenPomFile: $(serviceName)/pom.xml
+        mavenAuthenticateFeed: true
+        goals: clean package
+
+    - task: CopyFiles@2
+      inputs:
+        sourceFolder: '$(Build.SourcesDirectory)'
+        contents: '**/$(serviceName)/**/?(*.war|*.class|*.jar|*.xml|*.java)'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+    - publish: '$(Build.ArtifactStagingDirectory)'
+      artifact: $(serviceName)
+
+- stage: dev
+  jobs:
+  - deployment: dev
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    environment: 'QA'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: $(serviceName)
+          - script: dir
+            workingDirectory: $(System.ArtifactsDirectory)
+            displayName: List contents of a folder
+          - script: dir
+            workingDirectory: $(System.ArtifactsDirectory)/$(serviceName)
+            displayName: List contents of a service
+          - task: Maven@3
+            inputs:
+              mavenPomFile: '$(System.ArtifactsDirectory)/$(serviceName)/pom.xml'
+              goals: 'deploy -DmuleDeploy -Danypoint.environment=Sandbox -Denv=QA'
+              mavenAuthenticateFeed: true
+
+
+- stage: staging
+  jobs:
+  - deployment: UAT
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    environment: 'stage'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: Maven@3
+            inputs:
+              mavenPomFile: '$(serviceName)/pom.xml'
+              goals: 'deploy -DmuleDeploy -Danypoint.environment=dev -Denv=uat'
+              mavenAuthenticateFeed: true
+        
+- stage: Live
+  jobs:
+  - deployment: Prod
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    environment: 'Prod'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: Maven@3
+            inputs:
+              mavenPomFile: '$(serviceName)/pom.xml'
+              goals: 'deploy -DmuleDeploy -Danypoint.environment=dev -Denv=uat'
+              mavenAuthenticateFeed: true
