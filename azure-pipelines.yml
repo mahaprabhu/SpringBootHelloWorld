@@ -33,7 +33,7 @@ stages:
   - job: Build
     pool:
       vmImage: 'Ubuntu-16.04'
-    continueOnError: true
+    continueOnError: false
     steps:
     - task: DownloadSecureFile@1
       inputs:
@@ -42,7 +42,7 @@ stages:
     - powershell: Copy-Item -Force "$(Agent.TempDirectory)/settings.xml" "${HOME}/.m2/settings.xml"
     - task: Maven@3
       inputs:
-        mavenPomFile: $(serviceName)/pom.xml
+        mavenPomFile: pom.xml
         mavenAuthenticateFeed: true
         goals: clean package
 
@@ -75,7 +75,7 @@ stages:
             displayName: List contents of a service
           - task: Maven@3
             inputs:
-              mavenPomFile: '$(System.ArtifactsDirectory)/$(serviceName)/pom.xml'
+              mavenPomFile: '$(System.ArtifactsDirectory)/pom.xml'
               goals: 'deploy -DmuleDeploy -Danypoint.environment=Sandbox -Denv=QA'
               mavenAuthenticateFeed: true
 
