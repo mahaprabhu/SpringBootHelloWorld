@@ -75,12 +75,12 @@ stages:
           - download: current
             artifact: $(serviceName)
           - script: dir
-            workingDirectory: $(System.ArtifactsDirectory)
+            workingDirectory: $(Pipeline.Workspace)
             displayName: List contents of a folder
           
           - task: Maven@3
             inputs:
-              mavenPomFile: '$(System.ArtifactsDirectory)/pom.xml'
+              mavenPomFile: $(Pipeline.Workspace)/pom.xml'
               goals: 'deploy -DmuleDeploy -Danypoint.environment=Sandbox -Denv=QA'
               mavenAuthenticateFeed: true
 
