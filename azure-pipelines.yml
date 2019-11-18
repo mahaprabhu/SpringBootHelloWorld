@@ -49,7 +49,7 @@ stages:
     - task: CopyFiles@2
       inputs:
         sourceFolder: '$(Build.SourcesDirectory)'
-        contents: '|**/*!.git/**/*'
+        contents: '**'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
     - script: dir
