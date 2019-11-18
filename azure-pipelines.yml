@@ -52,6 +52,13 @@ stages:
         contents: '**/$(serviceName)/**/?(*.war|*.class|*.jar|*.xml|*.java)'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
+    - script: dir
+      workingDirectory: $(Build.ArtifactStagingDirectory)
+      displayName: List contents of a staging Directory
+    - script: dir
+      workingDirectory: $(Build.ArtifactStagingDirectory)/$(serviceName)
+      displayName: List contents of a service
+
     - publish: '$(Build.ArtifactStagingDirectory)'
       artifact: $(serviceName)
 
@@ -70,9 +77,7 @@ stages:
           - script: dir
             workingDirectory: $(System.ArtifactsDirectory)
             displayName: List contents of a folder
-          - script: dir
-            workingDirectory: $(System.ArtifactsDirectory)/$(serviceName)
-            displayName: List contents of a service
+          
           - task: Maven@3
             inputs:
               mavenPomFile: '$(System.ArtifactsDirectory)/pom.xml'
