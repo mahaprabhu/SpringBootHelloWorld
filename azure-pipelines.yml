@@ -6,6 +6,11 @@
 trigger:
 - master
 
+variables:
+    serviceName: 'SpringBootHelloWorld'
+    artifactPath: 'SpringBootHelloWorld'
+    artifactName: 'SpringBootHelloWorld'
+
 pool:
   vmImage: 'ubuntu-latest'
 
