@@ -78,7 +78,7 @@ stages:
           
           - task: Maven@3
             inputs:
-              mavenPomFile: $(Pipeline.Workspace)/pom.xml'
+              mavenPomFile: $(Pipeline.Workspace)/$(serviceName)/pom.xml'
               goals: 'deploy -DmuleDeploy -Danypoint.environment=Sandbox -Denv=QA'
               mavenAuthenticateFeed: true
 
