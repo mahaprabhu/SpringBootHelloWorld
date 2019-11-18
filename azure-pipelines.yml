@@ -55,9 +55,7 @@ stages:
     - script: dir
       workingDirectory: $(Build.ArtifactStagingDirectory)
       displayName: List contents of a staging Directory
-    - script: dir
-      workingDirectory: $(Build.ArtifactStagingDirectory)/$(serviceName)
-      displayName: List contents of a service
+
 
     - publish: '$(Build.ArtifactStagingDirectory)'
       artifact: $(serviceName)
