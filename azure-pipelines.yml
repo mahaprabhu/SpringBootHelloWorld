@@ -49,7 +49,7 @@ stages:
     - task: CopyFiles@2
       inputs:
         sourceFolder: '$(Build.SourcesDirectory)'
-        contents: '****?(*.war|*.class|*.jar|*.xml|*.java)'
+        contents: '|**/*!.git/**/*'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
     - script: dir
@@ -78,7 +78,7 @@ stages:
           
           - task: Maven@3
             inputs:
-              mavenPomFile: $(Pipeline.Workspace)/$(serviceName)/pom.xml'
+              mavenPomFile: $(Pipeline.Workspace)/pom.xml'
               goals: 'deploy -DmuleDeploy -Danypoint.environment=Sandbox -Denv=QA'
               mavenAuthenticateFeed: true
 
