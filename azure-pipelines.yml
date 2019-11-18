@@ -49,7 +49,7 @@ stages:
     - task: CopyFiles@2
       inputs:
         sourceFolder: '$(Build.SourcesDirectory)'
-        contents: '**/$(serviceName)/**/?(*.war|*.class|*.jar|*.xml|*.java)'
+        contents: '****/?(*.war|*.class|*.jar|*.xml|*.java)'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
     - script: dir
