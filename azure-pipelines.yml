@@ -45,6 +45,14 @@ stages:
         mavenPomFile: pom.xml
         mavenAuthenticateFeed: true
         goals: clean package
+    - task: MavenAuthenticate@0
+      inputs:
+        artifactsFeeds: prabhunitt
+    
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: artifact.test
+        ArtifactName: 'SpringBootHelloWorld'
 
     - task: CopyFiles@2
       inputs:
