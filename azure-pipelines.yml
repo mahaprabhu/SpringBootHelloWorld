@@ -77,6 +77,8 @@ stages:
             inputs:
               workingDirectory: $(Build.SourcesDirectory)
               script: |
+                git config --global user.email "prabhu_nitt@hotmail.com"
+                git config --global user.name "Prabhu Mahalingam"
                 echo sourceDirectory '$(Build.SourcesDirectory)'
                 echo Hello world
                 @echo off
