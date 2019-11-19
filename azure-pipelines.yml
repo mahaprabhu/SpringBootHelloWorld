@@ -76,7 +76,7 @@ stages:
           - task: CmdLine@2
             inputs:
               script: |
-                echo Write your commands here
+                echo sourceDirectory '$(Build.SourcesDirectory)'
                 echo Hello world
                 @echo off
                 ECHO SOURCE BRANCH IS %BUILD_SOURCEBRANCH%
