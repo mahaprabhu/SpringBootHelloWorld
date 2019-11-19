@@ -44,16 +44,11 @@ stages:
       inputs:
         mavenPomFile: pom.xml
         mavenAuthenticateFeed: true
-        goals: clean package
+        goals: clean package deploy
     - task: MavenAuthenticate@0
       inputs:
         artifactsFeeds: dev-azure-com-prabhunitt-prabhunitt
-    
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: prabhunitt
-        ArtifactName: 'SpringBootHelloWorld'
-
+   
     - task: CopyFiles@2
       inputs:
         sourceFolder: '$(Build.SourcesDirectory)'
