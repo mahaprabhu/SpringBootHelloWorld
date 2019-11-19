@@ -75,6 +75,7 @@ stages:
               script: |
                 echo Write your commands here
                 echo Hello world
+                git status
           
         #  - task: Maven@3
         #    inputs:
