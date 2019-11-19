@@ -90,7 +90,7 @@ stages:
             inputs:
               packageType: 'maven'
               feed: 'dev-azure-com-prabhunitt-prabhunitt'
-              definition: 'springboot:bootHelloWorld' 
+              definition: 'bootHelloWorld' 
               version: '0.0.1-SNAPSHOT'
               files: '*.pom'
               downloadPath: '$(System.ArtifactsDirectory)'
