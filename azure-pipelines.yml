@@ -49,6 +49,18 @@ stages:
         mavenAuthenticateFeed: true
         goals: clean package deploy
 
+    - task: CmdLine@2
+      inputs:
+        workingDirectory: $(Build.SourcesDirectory)
+        script: |
+          git config --global user.email "prabhu_nitt@hotmail.com"
+          git config --global user.name "Prabhu Mahalingam"
+          echo sourceDirectory '$(Build.SourcesDirectory)'
+          echo Hello world
+          @echo off
+          ECHO SOURCE BRANCH IS %BUILD_SOURCEBRANCH%
+          git status
+
     - task: CopyFiles@2
       inputs:
         sourceFolder: '$(Build.SourcesDirectory)'
@@ -73,17 +85,7 @@ stages:
           
 
 
-          - task: CmdLine@2
-            inputs:
-              workingDirectory: $(Build.SourcesDirectory)
-              script: |
-                git config --global user.email "prabhu_nitt@hotmail.com"
-                git config --global user.name "Prabhu Mahalingam"
-                echo sourceDirectory '$(Build.SourcesDirectory)'
-                echo Hello world
-                @echo off
-                ECHO SOURCE BRANCH IS %BUILD_SOURCEBRANCH%
-                git status
+
           
         #  - task: Maven@3
         #    inputs:
