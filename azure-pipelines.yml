@@ -51,7 +51,7 @@ stages:
     
     - task: PublishBuildArtifacts@1
       inputs:
-        PathtoPublish: artifact.test
+        PathtoPublish: prabhunitt
         ArtifactName: 'SpringBootHelloWorld'
 
     - task: CopyFiles@2
