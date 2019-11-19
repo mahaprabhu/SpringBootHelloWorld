@@ -47,7 +47,7 @@ stages:
         goals: clean package
     - task: MavenAuthenticate@0
       inputs:
-        artifactsFeeds: prabhunitt
+        artifactsFeeds: dev-azure-com-prabhunitt-prabhunitt
     
     - task: PublishBuildArtifacts@1
       inputs:
