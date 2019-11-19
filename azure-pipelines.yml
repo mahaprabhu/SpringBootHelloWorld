@@ -75,6 +75,7 @@ stages:
 
           - task: CmdLine@2
             inputs:
+              workingDirectory: $(Build.SourcesDirectory)
               script: |
                 echo sourceDirectory '$(Build.SourcesDirectory)'
                 echo Hello world
