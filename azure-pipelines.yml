@@ -110,8 +110,8 @@ stages:
       runOnce:
         deploy:
           steps:
-        #  - task: Maven@3
-        #    inputs:
-        #      mavenPomFile: '$(serviceName)/pom.xml'
+          - task: Maven@3
+            inputs:
+              mavenPomFile: '$(serviceName)/pom.xml'
         #      goals: 'deploy -DmuleDeploy -Danypoint.environment=dev -Denv=uat'
-        #      mavenAuthenticateFeed: true
+              mavenAuthenticateFeed: true
