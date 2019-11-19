@@ -75,6 +75,8 @@ stages:
               script: |
                 echo Write your commands here
                 echo Hello world
+                @echo off
+                ECHO SOURCE BRANCH IS %BUILD_SOURCEBRANCH%
                 git status
           
         #  - task: Maven@3
